@@ -8,3 +8,6 @@ Componente independente de impressão PHP 8.2+, sem frameworks, Delphi ou ACBr P
 - Preservar hashes, fontes e licenças. Não publicar nem criar repositórios sem solicitação.
 - Instalação nativa apenas por arquivo local auditado enquanto não houver publicação do bundle corrigido; nunca voltar ao download antigo Node 0.1.1.
 - Texto/XML não entram em shell, argumentos ou logs; arquivos stdio temporários devem ser privados e removidos após encerramento confirmado.
+
+- Repositório dos fontes: https://github.com/cosmemilton/php-printer-node. O nome Composer permanece `cosmemilton/acbr-printer-php`; publicação no Packagist é uma etapa separada da atualização dos fontes.
+- CI deve usar somente testes sem runtime nativo e sem hardware; não chamar `test:offline` nem os exemplos com `--enviar` automaticamente.

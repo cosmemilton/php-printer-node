@@ -1,8 +1,10 @@
 # ACBr Printer PHP
 
-Componente PHP independente de framework para **ACBrPosPrinter (texto/ESC-POS)**, **FortesReport/spooler** e **DANFE/PDF de XML NF-e/NFC-e**. Implementação local `0.1.0`, ainda não publicada. Não depende de Node.js, Delphi, ACBr Pro nem do componente fiscal PHP.
+Componente PHP independente de framework para **ACBrPosPrinter (texto/ESC-POS)**, **FortesReport/spooler** e **DANFE/PDF de XML NF-e/NFC-e**. Código de referência `0.1.0`; o pacote ainda não está publicado no Packagist. Não depende de Node.js, Delphi, ACBr Pro nem do componente fiscal PHP.
 
 O cliente PHP usa o motor Free Pascal/Lazarus **`0.1.2-local.1`**, derivado do motor auditado Node `0.1.1`, com a correção local do título do relatório de texto Fortes: protocolo JSONL 1, revisão ACBr 48590. Os componentes PHP/Python compartilham esse motor, sem exigir Node.js. O pacote Node publicado permanece inalterado. A integração com `cosmemilton/acbr-php` é opcional, pelo XML.
+
+[Repositório dos fontes](https://github.com/cosmemilton/php-printer-node) · pacote Composer `cosmemilton/acbr-printer-php`.
 
 ## Requisitos e instalação local
 
@@ -133,6 +135,8 @@ composer test
 composer test:offline
 # Linux sem display: xvfb-run -a php tests/offline.php
 ```
+
+O workflow `CI` está configurado para PHP 8.2 e 8.5 em Ubuntu 24.04 e Windows Server 2025. Ele valida a metadata Composer, o autoload, a sintaxe e os testes de cliente, sem instalar o runtime nativo. Os quatro grupos de configuração/instalador executam nos dois sistemas; os oito grupos de transporte com worker PHP sintético executam somente no Linux. A automação não executa `test:offline`, não baixa binários, não acessa a SEFAZ e não imprime.
 
 `tests/run.php` usa processo sintético no Linux e valida configuração, JSONL, integridade, limites, deadline e incerteza. Não acessa equipamentos. `tests/offline.php` usa o motor real somente para capacidades, filas e bytes; com `ACBR_PRINTER_XML` aponta para XML sintético e também gera PDF em memória. `ACBR_PRINTER_RUNTIME` permite override nos testes.
 

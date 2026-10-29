@@ -33,5 +33,10 @@
       "/.git",
       "/.artifacts"
     ]
+  },
+  "homepage": "https://github.com/cosmemilton/php-printer-node",
+  "support": {
+    "issues": "https://github.com/cosmemilton/php-printer-node/issues",
+    "source": "https://github.com/cosmemilton/php-printer-node"
   }
 }
