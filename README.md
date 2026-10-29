@@ -1,12 +1,12 @@
 # ACBr Printer PHP
 
-Componente PHP independente de framework para **ACBrPosPrinter (texto/ESC-POS)**, **FortesReport/spooler** e **DANFE/PDF de XML NF-e/NFC-e**. Código de referência `0.1.0`; o pacote ainda não está publicado no Packagist. Não depende de Node.js, Delphi, ACBr Pro nem do componente fiscal PHP.
+Componente PHP independente de framework para **ACBrPosPrinter (texto/ESC-POS)**, **FortesReport/spooler** e **DANFE/PDF de XML NF-e/NFC-e**. SDK `0.1.0`, distribuído como `cosmemilton/acbr-printer-php`. Não depende de Node.js, Delphi, ACBr Pro nem do componente fiscal PHP.
 
 O cliente PHP usa o motor Free Pascal/Lazarus **`0.1.2-local.1`**, derivado do motor auditado Node `0.1.1`, com a correção local do título do relatório de texto Fortes: protocolo JSONL 1, revisão ACBr 48590. Os componentes PHP/Python compartilham esse motor, sem exigir Node.js. O pacote Node publicado permanece inalterado. A integração com `cosmemilton/acbr-php` é opcional, pelo XML.
 
 [Repositório dos fontes](https://github.com/cosmemilton/php-printer-node) · pacote Composer `cosmemilton/acbr-printer-php`.
 
-## Requisitos e instalação local
+## Requisitos e instalação
 
 - PHP **8.2+ x64**, `ext-json`, `proc_open` habilitado, Windows ou Linux.
 - Composer para autoload/distribuição. O SDK não usa extensões fiscais proprietárias.
@@ -14,29 +14,31 @@ O cliente PHP usa o motor Free Pascal/Lazarus **`0.1.2-local.1`**, derivado do m
 - Linux: o motor completo usa GTK2, fontes e display (desktop, WSLg ou Xvfb), inclusive para capacidades/PDF.
 
 ```sh
-composer dump-autoload --no-dev --no-scripts
-php bin/acbr-printer --help
+composer require cosmemilton/acbr-printer-php:^0.1.0
+php vendor/bin/acbr-printer --help
 ```
 
-De outro projeto, configure um repositório Composer do tipo `path` apontando para esta pasta e solicite `cosmemilton/acbr-printer-php:@dev`. A instalação não baixa nem executa binários automaticamente.
+A instalação Composer disponibiliza o cliente PHP. Para desenvolver a partir de um clone, use `composer install --no-scripts --no-plugins` e `php bin/acbr-printer --help`. A instalação não baixa nem executa binários automaticamente. O cadastro e a atualização de versões estão descritos em [publicação](docs/PUBLICACAO.md).
 
 ### Runtime auditado
 
 Há duas formas de disponibilizar o motor:
 
 1. Usar `runtimeDirectory` apontando para `win32-x64` ou `linux-x64` completos, com o `manifest.json`, fontes e licenças.
-2. Executar explicitamente o instalador para um **diretório novo**, sem sobrescrever uma instalação:
+2. Baixar o [bundle auditado da release `v0.1.0`](https://github.com/cosmemilton/php-printer-node/releases/download/v0.1.0/acbr-printer-runtime-0.1.2-local.1.tgz) e executar explicitamente o instalador para um **diretório novo**, sem sobrescrever uma instalação:
 
 ```sh
-php bin/acbr-printer instalar-runtime --destino ./runtime/linux-x64 --arquivo /caminho/acbr-printer-runtime-0.1.2-local.1.tgz
+php vendor/bin/acbr-printer instalar-runtime --destino ./runtime/linux-x64 --arquivo /caminho/acbr-printer-runtime-0.1.2-local.1.tgz
 # No Windows, use ./runtime/win32-x64.
 ```
 
-O instalador requer `ext-zlib` e `ext-phar`. A distribuição é **somente local**: `URL` é `null` e `--arquivo` é obrigatório. Sem arquivo, retorna `RUNTIME_LOCAL_NAO_PUBLICADO` com a mensagem “Informe arquivo local; publicação remota ainda não existe”; ele não tenta baixar a versão Node anterior.
+O instalador requer `ext-zlib` e `ext-phar`. O download é manual e `--arquivo` continua obrigatório: `URL` e `runtime.lock.json` identificam a release pública, sem adicionar download automático. Sem arquivo, o código `RUNTIME_LOCAL_NAO_PUBLICADO` foi preservado por compatibilidade; a mensagem orienta baixar o bundle auditado e informar o arquivo local.
 
 O tarball `acbr-printer-runtime-0.1.2-local.1.tgz` deve ter **71.442.624 bytes** e SHA256 `0aba5fb78b40099427a74076a70d4e8edcda3b8fa243a0f31a5db5c8d2e64093`. O instalador confere esses bytes, extrai somente a plataforma atual e valida todos os hashes. Não instala compiladores nem usa npm. Os fontes do driver corrigido estão em `runtime/<plataforma>-x64/sources/driver-source.tar.gz`, acompanhados de origem e patch. Esse bundle não é uma nova publicação do pacote Node.
 
 Sem `runtimeDirectory`, o cliente procura `runtime/<plataforma>-x64` na raiz desta biblioteca. Os binários locais são ignorados pelo Git e pelo archive Composer; não substitua o manifesto para aceitar um executável alterado.
+
+Ao instalar o motor em `./runtime` da aplicação consumidora, informe esse caminho em `runtimeDirectory` ao criar cada instância, como no exemplo abaixo.
 
 ## Primeiro cupom sem papel
 
@@ -45,7 +47,10 @@ Sem `runtimeDirectory`, o cliente procura `runtime/<plataforma>-x64` na raiz des
 require __DIR__ . '/vendor/autoload.php';
 use Acbr\Printer\Impressora;
 
-$impressora = new Impressora(['tipo' => 0]);
+$impressora = new Impressora([
+    'tipo' => 0,
+    'runtimeDirectory' => __DIR__ . '/runtime/' . (PHP_OS_FAMILY === 'Windows' ? 'win32-x64' : 'linux-x64'),
+]);
 try {
     $resultado = $impressora->gerarEscpos("TESTE NAO FISCAL\nPHP / ACBr Printer\n");
     if (!$resultado['sucesso']) {

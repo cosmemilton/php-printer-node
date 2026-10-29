@@ -45,8 +45,9 @@ test('instalador não sobrescreve destino nem aceita checksum incorreto',functio
     try { error('ARTEFATO_DIVERGENTE',fn()=>InstaladorRuntime::instalar($destination,$input)); check(!file_exists($destination)); }
     finally { unlink($input); clean($destination); }
 });
-test('runtime local não tenta URL remota e exige arquivo explícito',function():void {
-    check(InstaladorRuntime::URL===null);
+test('runtime público não baixa automaticamente e exige arquivo explícito',function():void {
+    $lock=json_decode((string)file_get_contents(__DIR__.'/../runtime.lock.json'),true,16,JSON_THROW_ON_ERROR);
+    check(InstaladorRuntime::URL===$lock['remoteUrl'] && $lock['status']==='public-manual-install');
     check(InstaladorRuntime::RUNTIME_VERSION==='0.1.2-local.1');
     $destination=sys_get_temp_dir().'/acbr-unpublished-test-'.bin2hex(random_bytes(8));
     error('RUNTIME_LOCAL_NAO_PUBLICADO',fn()=>InstaladorRuntime::instalar($destination));

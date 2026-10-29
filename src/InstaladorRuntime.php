@@ -7,13 +7,13 @@ final class InstaladorRuntime
 {
     public const RUNTIME_VERSION = '0.1.2-local.1';
     public const FILE = 'acbr-printer-runtime-0.1.2-local.1.tgz';
-    public const URL = null;
+    public const URL = 'https://github.com/cosmemilton/php-printer-node/releases/download/v0.1.0/acbr-printer-runtime-0.1.2-local.1.tgz';
     public const SHA256 = '0aba5fb78b40099427a74076a70d4e8edcda3b8fa243a0f31a5db5c8d2e64093';
     public const BYTES = 71442624;
 
     public static function instalar(string $destino, ?string $arquivoLocal = null): array
     {
-        if ($arquivoLocal === null) throw new ErroAcbrImpressora('RUNTIME_LOCAL_NAO_PUBLICADO', 'Informe arquivo local; publicação remota ainda não existe.');
+        if ($arquivoLocal === null) throw new ErroAcbrImpressora('RUNTIME_LOCAL_NAO_PUBLICADO', 'Baixe o bundle auditado da release e informe o arquivo local; o instalador não faz downloads.');
         if (!extension_loaded('zlib') || !class_exists(\PharData::class)) throw new ErroAcbrImpressora('DEPENDENCIA_AUSENTE', 'Instalação requer ext-zlib e ext-phar.');
         if (trim($destino) === '' || str_contains($destino, "\0") || file_exists($destino) || is_link($destino)) throw new ErroAcbrImpressora('DESTINO_EXISTENTE', 'Escolha um diretório novo para o runtime.');
         $platform = Runtime::plataforma();
