@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+$autoload = [__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php'];
+foreach ($autoload as $file) if (is_file($file)) { require $file; break; }
+if (!class_exists(\Acbr\Printer\InstaladorRuntime::class)) { fwrite(STDERR,"Carregue o projeto com Composer.\n"); exit(1); }
+$args=$argv; array_shift($args);
+if (!$args || in_array($args[0],['--help','-h'],true)) {
+    echo "Uso: acbr-printer instalar-runtime --destino DIRETORIO --arquivo acbr-printer-runtime-0.1.2-local.1.tgz\n"; exit(0);
+}
+try {
+    if (array_shift($args)!=='instalar-runtime') throw new \InvalidArgumentException();
+    $options=[];
+    while ($args) {
+        $key=array_shift($args);
+        if (!in_array($key,['--destino','--arquivo'],true) || !$args || isset($options[$key])) throw new \InvalidArgumentException();
+        $options[$key]=array_shift($args);
+    }
+    if (!isset($options['--destino'])) throw new \InvalidArgumentException();
+    echo json_encode(\Acbr\Printer\InstaladorRuntime::instalar($options['--destino'],$options['--arquivo']??null),JSON_THROW_ON_ERROR|JSON_UNESCAPED_SLASHES)."\n";
+} catch (\Acbr\Printer\ErroAcbrImpressora $error) { fwrite(STDERR,json_encode($error,JSON_UNESCAPED_UNICODE)."\n"); exit(1); }
+catch (\Throwable) { fwrite(STDERR,"Argumentos inválidos. Consulte --help.\n"); exit(1); }

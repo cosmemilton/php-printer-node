@@ -1,0 +1,37 @@
+{
+  "name": "cosmemilton/acbr-printer-php",
+  "description": "Impressão PHP com ACBrPosPrinter, FortesReport e DANFE via runtime Free Pascal/Lazarus",
+  "type": "library",
+  "license": "LGPL-2.1-or-later",
+  "require": {
+    "php": ">=8.2",
+    "ext-json": "*"
+  },
+  "suggest": {
+    "ext-zlib": "Instalação explícita do runtime auditado",
+    "ext-phar": "Instalação explícita do runtime auditado"
+  },
+  "autoload": {
+    "psr-4": {
+      "Acbr\\Printer\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "bin": [
+    "bin/acbr-printer"
+  ],
+  "scripts": {
+    "test": "php tests/run.php",
+    "test:offline": "php tests/offline.php"
+  },
+  "archive": {
+    "exclude": [
+      "/runtime",
+      "/vendor",
+      "/.git",
+      "/.artifacts"
+    ]
+  }
+}

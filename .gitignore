@@ -1,0 +1,17 @@
+/vendor/
+/runtime/
+/.artifacts/
+/composer.lock
+*.pdf
+*.bin
+.env
+.env.*
+*.pfx
+*.p12
+*.key
+/artifacts/
+/dist/
+/build/
+*.zip
+*.tgz
+*.tar.gz

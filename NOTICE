@@ -1,0 +1,20 @@
+ACBr Printer PHP — implementação local 0.1.0
+Copyright 2026 Milton Cosme da Silva Júnior e colaboradores.
+LGPL-2.1-or-later. Projeto independente, não oficial do Projeto ACBr.
+
+O contrato JSONL e o motor Free Pascal/Lazarus foram adaptados/reutilizados de
+cosmemilton-acbr-printer-node 0.1.1 (ACBr SVN r48590), também LGPL-2.1-or-later.
+Bundle nativo original SHA256:
+3a6cd6ba1cd7a875a170a33d7644760c13e5d744f5913a5840b280e98d925c52
+
+Motor corrente local: 0.1.2-local.1, com JobTitle explícito para o relatório
+Fortes de texto criado sem Owner. O pacote Node publicado não foi modificado.
+Bundle local auditado: acbr-printer-runtime-0.1.2-local.1.tgz
+71.442.624 bytes; SHA256:
+0aba5fb78b40099427a74076a70d4e8edcda3b8fa243a0f31a5db5c8d2e64093
+Fontes do driver, origem e patch acompanham runtime/sources.
+
+Os runtimes redistribuem fontes e avisos de ACBr, FortesReport, Free Pascal,
+Lazarus e bibliotecas necessárias. Preserve runtime/licenses e runtime/sources.
+Consulte o manifesto e os notices presentes no runtime para autores, versões
+e licenças específicas, incluindo exceções de linkagem quando aplicáveis.
